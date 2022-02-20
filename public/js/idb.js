@@ -1,41 +1,41 @@
-let db;
+// let db;
 
-// establishes a connection to IndexedDB database and sets it to version 1
-const request = indexedDB.open('budget', 1);
+// // establishes a connection to IndexedDB database and sets it to version 1
+// const request = indexedDB.open('budget', 1);
 
-// this event listener will emit if the database version changes
-request.onupgradeneeded = function (event) {
-  // save a reference to the database
-  const db = event.target.result;
-  // create and object store called 'new_submission' with an auto incrementing key
-  db.createObjectStore('new_submission', { autoIncrement: true });
-};
+// // this event listener will emit if the database version changes
+// request.onupgradeneeded = function (event) {
+//   // save a reference to the database
+//   const db = event.target.result;
+//   // create and object store called 'new_submission' with an auto incrementing key
+//   db.createObjectStore('new_submission', { autoIncrement: true });
+// };
 
-request.onsuccess = function (event) {
-  // when db is successfully created, or connection is established, save reference to db in global variable
-  db = event.target.result;
+// request.onsuccess = function (event) {
+//   // when db is successfully created, or connection is established, save reference to db in global variable
+//   db = event.target.result;
 
-  //check if app is online, if yes we run uploadSubmission function to send local db data to api
-  if (navigator.onLine) {
-      uploadSubmission()
-  }
-};
+//   //check if app is online, if yes we run uploadSubmission function to send local db data to api
+//   if (navigator.onLine) {
+//       uploadSubmission()
+//   }
+// };
 
-request.onerror = function (event) {
-  console.log(event.target.errorCode);
-};
+// request.onerror = function (event) {
+//   console.log(event.target.errorCode);
+// };
 
-// This function will be executed if we attempt to submit a new submission and there's no internet connection
-function saveRecord(record) {
-  // open a new transaction with the database with read and write permissions
-  const transaction = db.transaction(['new_submission'], 'readwrite');
+// // This function will be executed if we attempt to submit a new submission and there's no internet connection
+// function saveRecord(record) {
+//   // open a new transaction with the database with read and write permissions
+//   const transaction = db.transaction(['new_submission'], 'readwrite');
 
-  // access the object store for `new_submission`
-  const submissionObjectStore = transaction.objectStore('new_submission');
+//   // access the object store for `new_submission`
+//   const submissionObjectStore = transaction.objectStore('new_submission');
 
-  // using add metho to add record to store
-  submissionObjectStore.add(record);
-}
+//   // using add metho to add record to store
+//   submissionObjectStore.add(record);
+// }
 
 // function uploadSubmission() {
 //   const transaction = db.transaction(['new_submission'], 'readwrite');
@@ -78,4 +78,4 @@ function saveRecord(record) {
 //   };
 // }
 
-window.addEventListener('online', uploadSubmission);
+// window.addEventListener('online', uploadSubmission);
