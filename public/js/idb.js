@@ -37,45 +37,45 @@ function saveRecord(record) {
   submissionObjectStore.add(record);
 }
 
-function uploadSubmission() {
-  const transaction = db.transaction(['new_submission'], 'readwrite');
+// function uploadSubmission() {
+//   const transaction = db.transaction(['new_submission'], 'readwrite');
 
-  const submissionObjectStore = transaction.objectStore('new_submission');
+//   const submissionObjectStore = transaction.objectStore('new_submission');
 
-  const getAll = submissionObjectStore.getAll();
+//   const getAll = submissionObjectStore.getAll();
 
-  // upon a successful .getAll() execution, run this function
-  getAll.onsuccess = function () {
-      // if there was data in indexedDB's store let's send it to the api
-    if (getAll.result.length > 0) {
-      fetch('/api/transaction', {
-        method: 'POST',
-        body: JSON.stringify(getAll.result),
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => response.json())
-        .then((serverResponse) => {
-          if (serverResponse.message) {
-            throw new Error(serverResponse);
-          }
-          // access the object store one more time to empty it
-          const transaction = db.transaction(['new_submission'], 'readwrite');
+//   // upon a successful .getAll() execution, run this function
+//   getAll.onsuccess = function () {
+//       // if there was data in indexedDB's store let's send it to the api
+//     if (getAll.result.length > 0) {
+//       fetch('/api/transaction', {
+//         method: 'POST',
+//         body: JSON.stringify(getAll.result),
+//         headers: {
+//           Accept: 'application/json, text/plain, */*',
+//           'Content-Type': 'application/json',
+//         },
+//       })
+//         .then((response) => response.json())
+//         .then((serverResponse) => {
+//           if (serverResponse.message) {
+//             throw new Error(serverResponse);
+//           }
+//           // access the object store one more time to empty it
+//           const transaction = db.transaction(['new_submission'], 'readwrite');
 
-          const submissionObjectStore =
-            transaction.objectStore('new_submission');
-          // clear all items in your store
-          submissionObjectStore.clear();
+//           const submissionObjectStore =
+//             transaction.objectStore('new_submission');
+//           // clear all items in your store
+//           submissionObjectStore.clear();
 
-          alert('All saved transactions have been submitted!');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-}
+//           alert('All saved transactions have been submitted!');
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//         });
+//     }
+//   };
+// }
 
 window.addEventListener('online', uploadSubmission);
